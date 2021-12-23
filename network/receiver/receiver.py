@@ -12,9 +12,7 @@ class Receiver(metaclass=ABCMeta):
 
         self._parsed_data = []
 
-        thread = threading.Thread(target=self._receive_data)
-        thread.daemon = True
-        thread.start()
+        threading.Thread(target=self._receive_data, daemon=True).start()
 
     def __del__(self):
         self.sock.close()
