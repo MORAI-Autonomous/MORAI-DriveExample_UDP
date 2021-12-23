@@ -1,0 +1,3 @@
+[submodule "autonomous_driving"]
+	path = autonomous_driving
+	url = https://github.com/morai-developergroup/morai-standard-ad-algorithm
