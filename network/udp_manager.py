@@ -30,7 +30,7 @@ class UdpManager:
         self.path_list_y = []
 
         
-        self.vehicle_max_steering_data = 36.25
+        self.vehicle_max_steering_data = 20.00
 
     def execute(self):
         print('start simulation')
