@@ -8,10 +8,10 @@ First step to enjoy the `MORAI Sim: Drive` with UDP.
 ./
 ├── autonomous_driving     # [Autonomous Driving] autonomous driving module
 ├── network                # UDP network connection
-     ├── receiver            # UDP network - receiver functions
-     ├── sender              # UDP network - sender functions
-     ├── config.json         # UDP network connection config file
-     └── udp_manager.py      # UDP network manager class
+│    ├── receiver            # UDP network - receiver functions
+│    ├── sender              # UDP network - sender functions
+│    ├── config.json         # UDP network connection config file
+│    └── udp_manager.py      # UDP network manager class
 └── main.py                # [Entry] example excuter
 ```
 
