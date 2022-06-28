@@ -29,8 +29,8 @@ These example contains the below list.
 Install packages which basically need
 
 ```
-$ git clone https://github.com/MORAI-Autonomous/MORAI-DriveExample_ROS.git
-$ cd MORAI-DriveExample
+$ git clone https://github.com/MORAI-Autonomous/MORAI-DriveExample_UDP.git
+$ cd MORAI-DriveExample_UDP
 $ git submodule update --init --reculsive
 $ find -name 'requirements.txt' | xargs -L 1 sudo pip install -U -r
 ```
