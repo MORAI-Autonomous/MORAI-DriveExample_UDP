@@ -39,7 +39,7 @@ $ find -name 'requirements.txt' | xargs -L 1 sudo pip install -U -r
 
 Enjoy the example which follow the trajectory with smart cruise control.
 ```
-$ py ./main.py
+$ python ./main.py
 ```
 
 # License
