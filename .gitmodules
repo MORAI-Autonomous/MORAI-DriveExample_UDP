@@ -1,3 +1,0 @@
-[submodule "autonomous_driving"]
-	path = autonomous_driving
-	url = https://github.com/MORAI-Autonomous/MORAI-ADModule
