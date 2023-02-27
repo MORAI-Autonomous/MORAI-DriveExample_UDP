@@ -19,7 +19,7 @@ lidar_port = params["lidar_dst_port"]
 
 params_lidar = {
     "Range" : 90, #min & max range of lidar azimuths
-    "CHANNEL" : 32, #verticla channel of a lidar
+    "CHANNEL" :1, #verticla channel of a lidar
     "localIP": user_ip,
     "hostIP" : host_ip,
     "localPort": lidar_port,

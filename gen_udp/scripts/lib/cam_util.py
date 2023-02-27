@@ -20,7 +20,7 @@ class UDP_CAM_Parser:
 
         self.data_size=int(65000)
         
-        self.max_len = 10 #640X480
+        self.max_len = 3 #640X480
         self.raw_img=None
         self.is_img=False
         thread = threading.Thread(target=self.loop)
@@ -56,25 +56,72 @@ class UDP_CAM_Parser:
             UnitBlock, sender = self.sock.recvfrom(self.data_size)
 
             # traffic light
-            if np.frombuffer(UnitBlock[0:3], dtype = "S1")[0] == b'T':  
-                UnitIdx = np.frombuffer(UnitBlock[3:7], dtype = "int")[0]
+            if np.frombuffer(UnitBlock[0:3], dtype = "S1")[0] == b'T':  #3
+
+                UnitIdx = np.frombuffer(UnitBlock[3:7], dtype = "int")[0] #4
                 UnitSize = np.frombuffer(UnitBlock[7:11], dtype = "int")[0]
                 UnitTail = UnitBlock[-2:]
 
+                # Count Total Traffic Light
+
+                total_traffic_count = 0
+                for i in range(UnitSize - 1):
+                    if (UnitBlock[11+i:11+i+2] == b'TL' or UnitBlock[11+i:11+i+2] == b'PL'):
+                        total_traffic_count += 1
+                        
                 if UnitTail==b'ET':
-                    for i in range(int(UnitSize/19)):
-                        print("------------------------------")
-                        print("{}th Traffic Light".format(i+1))
+                    # 4 x 3 (size/size/size) + 16(data) + ...
+                    size_count = 11
+                    class_size = 0
+                    subclass_size = 0
+                    if (total_traffic_count > 0):
+                    
+                        for i in range(int(total_traffic_count)):
+                            print("------------------------------")
 
-                        print("min_x {}".format(np.frombuffer(UnitBlock[19*i+11:19*i+15], dtype = "float32")))
-                        print("min_y {}".format(np.frombuffer(UnitBlock[19*i+15:19*i+19], dtype = "float32")))
-                        print("max_x {}".format(np.frombuffer(UnitBlock[19*i+19:19*i+23], dtype = "float32")))
-                        print("max_y {}".format(np.frombuffer(UnitBlock[19*i+23:19*i+27], dtype = "float32")))
+                            print("{}th Traffic Light".format(i+1))
+                            
+                            init_index = 0
 
-                        print("group data {}".format(hex(np.frombuffer(UnitBlock[19*i+27:19*i+28], dtype = "uint8")[0])))
-                        print("class data {}".format(hex(np.frombuffer(UnitBlock[19*i+28:19*i+29], dtype = "uint8")[0])))
-                        print("subclass data {}".format(hex(np.frombuffer(UnitBlock[19*i+29:19*i+30], dtype = "uint8")[0])))
-                        print("------------------------------")
+                            print("min_x {}".format(np.frombuffer(
+                                UnitBlock[size_count+init_index:size_count+init_index+4], dtype="float32")))
+                            init_index += 4
+                            print("min_y {}".format(np.frombuffer(
+                                UnitBlock[size_count+init_index:size_count+init_index+4], dtype="float32")))
+                            init_index += 4
+                            print("max_x {}".format(np.frombuffer(
+                                UnitBlock[size_count+init_index:size_count+init_index+4], dtype="float32")))
+                            init_index += 4
+                            print("max_y {}".format(np.frombuffer(
+                                UnitBlock[size_count+init_index:size_count+init_index+4], dtype="float32")))
+                            init_index += 4
+                            
+                            print("Group {}".format(
+                                UnitBlock[size_count+init_index:size_count+init_index+2].decode('utf-8')))
+                            init_index += 2
+                            
+                            if (UnitBlock[size_count+init_index:size_count+init_index+1] == b'h'):
+                                class_size = 2
+                                
+                            if (UnitBlock[size_count+init_index:size_count+init_index+1] == b'i'):
+                                class_size = 3
+                            
+                            print("Class {}".format(
+                                UnitBlock[size_count+init_index:size_count+init_index+class_size].decode('utf-8')))
+                            init_index += class_size
+                            
+                            for j in range(30):
+                                if (UnitBlock[size_count+init_index+j:size_count+init_index+j+2] == b'TL' or UnitBlock[size_count+init_index+j:size_count+init_index+j+2] == b'PL'):
+                                    subclass_size = j - 16
+                                    break
+                            
+                            print("SubClass {}".format(
+                                UnitBlock[size_count+init_index:size_count+init_index+subclass_size].decode('utf-8')))
+                            init_index += subclass_size
+                            
+                            size_count += 16 + 2 + class_size + subclass_size
+                                
+                            print("------------------------------")
 
                     
 
@@ -88,8 +135,10 @@ class UDP_CAM_Parser:
                 TotalBuffer+=UnitBody
 
                 if UnitTail==b'EI':
-                
-                    TotalIMG = cv2.imdecode(np.fromstring(TotalBuffer[-64987*self.max_len-UnitSize:], np.uint8), 1)
+
+                    print("Compressed imageSize : {}".format(len(TotalBuffer)))
+
+                    TotalIMG = cv2.imdecode(np.fromstring(TotalBuffer[-64987*self.max_len-UnitSize:], np.uint8), cv2.IMREAD_COLOR)
 
                     TotalBuffer = b''
 
