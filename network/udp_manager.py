@@ -60,6 +60,7 @@ class UdpManager:
             start_time = time.perf_counter()
             compen_time = 0
             if self.vehicle_state:
+                
 
                 control_input, _ = self.autonomous_driving.execute(
                     self.vehicle_state, self.object_info_list, self.traffic_light

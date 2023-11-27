@@ -10,7 +10,7 @@ class ObjectInfoReceiver(Receiver):
     def _parse_data(self, raw_data):
         if self.header == raw_data[0:14].decode():
             object_info_list = []
-            offset_byte = 30
+            offset_byte = 38
             data_size = 68
             for i in range(20):
                 start_byte = i*data_size + offset_byte
