@@ -1,0 +1,11 @@
+[project]
+name = "morai-driveexample-udp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.4.1",
+    "pandas>=2.3.3",
+    "pyproj>=3.7.2",
+]

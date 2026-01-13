@@ -1,13 +1,11 @@
 import numpy as np
+import os
+import time
 from autonomous_driving.vehicle_state import VehicleState
 from autonomous_driving.perception.object_info import ObjectInfo
 from autonomous_driving.config.config import Config
 from .sender import CtrlCmdSender, TrafficLightSender
 from .receiver import EgoInfoReceiver, ObjectInfoReceiver, TrafficLightReceiver
-import os
-import threading
-import time
-from math import sqrt
 
 
 class UdpManager:
@@ -29,7 +27,6 @@ class UdpManager:
         self.path_list_x = []
         self.path_list_y = []
 
-        
         self.vehicle_max_steering_data = 36.25
 
     def execute(self):
@@ -55,26 +52,22 @@ class UdpManager:
         )
 
     def _main_loop(self):
-
         while True:
             start_time = time.perf_counter()
-            compen_time = 0
-            if self.vehicle_state:
-                
 
+            if self.vehicle_state:
                 control_input, _ = self.autonomous_driving.execute(
                     self.vehicle_state, self.object_info_list, self.traffic_light
                 )
-
                 steering_input = -np.rad2deg(control_input.steering)/self.vehicle_max_steering_data
-
                 self.ctrl_cmd_sender.send_data([control_input.accel, control_input.brake, steering_input])
-                
-                end_time = time.perf_counter()
                 self._print_info(control_input)
-                compen_time = float((end_time - start_time))
-            if((1/30 - compen_time) > 0):
-                time.sleep(1/30 - compen_time)
+                
+            elapsed_time = time.perf_counter() - start_time
+            sleep_time = self.sampling_time - elapsed_time
+
+            if sleep_time > 0:
+                time.sleep(sleep_time)
 
     def _print_info(self, control_input):
         os.system('cls')

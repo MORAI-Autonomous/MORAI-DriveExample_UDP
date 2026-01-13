@@ -6,8 +6,7 @@ class EgoInfoReceiver(Receiver):
     def __init__(self, ip, port, callback):
         super().__init__(ip, port, callback)
         self.header = '#MoraiInfo$'
-        # self.data_length = 132
-        self.data_length = 152
+        self.data_length = 200
 
     def _parse_data(self, raw_data):
         if self.header == raw_data[0:11].decode() and self.data_length == struct.unpack('i', raw_data[11:15])[0]:
