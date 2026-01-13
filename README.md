@@ -73,11 +73,11 @@ Examine the network configuration file `network/config.json` and match the value
 | `network.ego_info_dst_port` | Port for receiving ego vehicle information (destination) | 909 |
 | `network.object_info_host_port` | Port for receiving object information (host) | 7605 |
 | `network.object_info_dst_port` | Port for receiving object information (destination) | 7505 |
-| `network.get_traffic_host_port` | Port for receiving traffic light status (host) | 7602 |
+| `network.get_traffic_host_port` | Port for receiving traffic light status (host) | 7603 |
 | `network.get_traffic_dst_port` | Port for receiving traffic light status (destination) | 7502 |
-| `network.ctrl_cmd_host_port` | Port for sending control commands (host) | 9099 |
-| `network.ctrl_cmd_dst_port` | Port for sending control commands (destination) | 9100 |
-| `network.set_traffic_host_port` | Port for sending traffic light commands (host) | 7603 |
+| `network.ctrl_cmd_host_port` | Port for sending control commands (host) | 9095 |
+| `network.ctrl_cmd_dst_port` | Port for sending control commands (destination) | 9096 |
+| `network.set_traffic_host_port` | Port for sending traffic light commands (host) | 7607 |
 | `network.set_traffic_dst_port` | Port for sending traffic light commands (destination) | 7503 |
 
 Run the example by running the main entry function.
