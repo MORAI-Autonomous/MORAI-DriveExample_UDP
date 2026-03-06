@@ -6,7 +6,7 @@ class CtrlCmdSender(Sender):
     def __init__(self, ip, port):
         super().__init__(ip, port)
         message_name = '#MoraiCtrlCmd$'.encode()
-        data_length = struct.pack('i', 23)
+        data_length = struct.pack('i', 27)
         aux_data = struct.pack('iii', 0, 0, 0)
         self.header = message_name + data_length + aux_data
         self.tail = '\r\n'.encode()
@@ -20,8 +20,9 @@ class CtrlCmdSender(Sender):
 
         accel = struct.pack('f', data[0])
         brake = struct.pack('f', data[1])
-        steering = struct.pack('f', data[2])
-        message = mode + gear + cmd_type + velocity + acceleration + accel + brake + steering
+        front_steer = struct.pack('f', data[2])
+        rear_steer = struct.pack('f', 0)
+        message = mode + gear + cmd_type + velocity + acceleration + accel + brake + front_steer + rear_steer
         formatted_data = self.header + message + self.tail
 
         return formatted_data

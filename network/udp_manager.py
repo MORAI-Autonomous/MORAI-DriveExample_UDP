@@ -27,8 +27,6 @@ class UdpManager:
         self.path_list_x = []
         self.path_list_y = []
 
-        self.vehicle_max_steering_data = 36.25
-
     def execute(self):
         print('start simulation')
         self._set_protocol()
@@ -59,7 +57,7 @@ class UdpManager:
                 control_input, _ = self.autonomous_driving.execute(
                     self.vehicle_state, self.object_info_list, self.traffic_light
                 )
-                steering_input = -np.rad2deg(control_input.steering)/self.vehicle_max_steering_data
+                steering_input = control_input.front_steer
                 self.ctrl_cmd_sender.send_data([control_input.accel, control_input.brake, steering_input])
                 self._print_info(control_input)
                 
@@ -79,7 +77,7 @@ class UdpManager:
         print('--------------------controller-------------------------')
         print(f'accel: {control_input.accel:.4f}')
         print(f'brake: {control_input.brake:.4f}')
-        print(f'steering_angle: {-np.rad2deg(control_input.steering):.4f} deg')
+        print(f'steering_angle: {-np.rad2deg(control_input.front_steer)*self.autonomous_driving.max_steering:.4f} deg')
 
         if self.object_info_list:
             print('--------------------object-------------------------')
