@@ -25,7 +25,7 @@ These example contains the below list.
 
 - python >= 3.7
 
-# Installation
+# Installation (Linux)
 
 Install packages which basically need
 
@@ -48,9 +48,13 @@ $ python ./main.py
 - MGeo Module license info: [MGeo module License](./autonomous_driving/mgeo/lib/mgeo/docs/License.md)
 
 # Installation (Windows)
-
+```powershell
+    > git clone https://github.com/MORAI-Autonomous/MORAI-DriveExample_UDP.git
+    > cd MORAI-DriveExample_UDP
+```
 - Download and install python install manager from the python website.
 - Install Python 3.8.10: 
+```powershell
     > py uninstall --purge 
     > py install 3.8.10
 - In our case it was 3.14.0rc3
@@ -65,9 +69,9 @@ $ python ./main.py
 - Install the required packages:
     > python -m pip install --upgrade pip
     > python -m pip install -r requirements.txt
-
+```
 
 # Configuration of the Simulator
 
 - Open The simulator and choose the Map `V_RHT_Suburb_03` and the car `Volvo XC 90`
-- 
+
